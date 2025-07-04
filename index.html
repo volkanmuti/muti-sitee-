@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <title>BIST 30 Tavsiyeler</title>
+</head>
+<body>
+    <h1>BIST 30 Hisse Tavsiyeleri</h1>
+    <div id="tavsiyeler">Yükleniyor...</div>
+
+    <script>
+        const apiUrl = "https://volkanmuti.pythonanywhere.com/api/tavsiyeler";
+
+        async function getirTavsiyeler() {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                let html = "<ul>";
+                for (const hisse in data) {
+                    html += `<li><strong>${hisse}</strong>: ${data[hisse].tavsiye} (Fiyat: ${data[hisse].fiyat})</li>`;
+                }
+                html += "</ul>";
+
+                document.getElementById("tavsiyeler").innerHTML = html;
+            } catch (error) {
+                document.getElementById("tavsiyeler").innerHTML = "Veri alınamadı.";
+                console.error("API Hatası:", error);
+            }
+        }
+
+        window.onload = getirTavsiyeler;
+    </script>
+</body>
+</html>
